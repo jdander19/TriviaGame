@@ -1,54 +1,63 @@
 $(document).ready(function(){
   
-
     $("#remaining-time").hide();
-    $("#start").on('click', trivia.startGame);
-    $(document).on('click' , '.option', trivia.guessChecker);
-    
-  })
   
-  var trivia = {
-
-    questions: {
-      q1: '1. Who directed A ClockWork Orange?',
-      q2: '2. Who directed Psycho?',
-      q3: '3. Who directed Inception?',
-      q4: '4. Who directed Pulp Fiction?',
-      q5: "5. Who directed Citizen Kane?",
-      q6: '6. Who directed The Matrix?',
-      q7: "7. Who directed Fargo?",
-      q8: "8. Who directed Seven Samurai?",
-      q9: "9. Who Directed Star Wars?",
-      q10: "10. Who Directed Jaws?",
-
+  var questions = 
+     [{
+      question: '1. Who directed A ClockWork Orange?',
+      options: ['John Ford','Steven Spielberg','Stanley Kubrick', 'Frances Ford Copella'],
+      answer: 'Stanley Kubrick',
+     },
+     {
+      question: '2. Who directed Psycho?',
+      options: ['George Lucas', 'Alfred Hitchcock', 'Orson Wells', 'Stanley Kubrick'],
+      answer: 'Alfred Hitchcock',
+     },
+     {
+      question: '3. Who directed Inception?',
+      options: ['Quinten Tarantino', 'JJ Abrams', 'Christopher Nolan', 'Steven Spielberg'],
+      answer: 'Christopher Nolan',
     },
-    options: {
-      q1: ['John Ford','Steven Spielberg','Stanley Kubrick', 'Frances Ford Copella'],
-      q2: ['George Lucas', 'Alfred Hitchcock', 'Orson Wells', 'Stanley Kubrick'],
-      q3: ['Quinten Tarantino', 'JJ Abrams', 'Christopher Nolan', 'Steven Spielberg'],
-      q4: ['Christopher Nolan', 'Frances Ford Copella', 'Quinten Tarantino', 'Akira Kurosawa'],
-      q5: ['Orson Wells','Akira Kurosawa', 'Alfred Hitchcock','George Lucas'],
-      q6: ['The Wachoskis','The Coens','The Russos','Lord and Miller'],
-      q7: ['The Wachoskis', 'The Coens', 'The Russos','Lord and Miller'],
-      q8: ['John Ford', 'Orson Wells', 'Akira Kurosawa', 'Stanley Kubrick'],
-      q9: ['Steven Spielberg', 'George Lucas', 'Christopher Nolan', 'Stanley Kubrick' ],
-      q10: ['Stanley Kubrick', 'Quinten Tarantino', 'George Lucas', 'Steven Spielberg'],
+    {
+      question: '4. Who directed Pulp Fiction?',
+      options: ['Christopher Nolan', 'Frances Ford Copella', 'Quinten Tarantino', 'Akira Kurosawa'],
+      answer: 'Quinten Tarantino',
     },
-    answers: {
-      q1: 'Stanley Kubrick',
-      q2: 'Alfred Hitchcock',
-      q3: 'Christopher Nolan',
-      q4: 'Quinten Tarantino',
-      q5: 'Orson Wells',
-      q6: 'The Wachoskis',
-      q7: 'The Coens',
-      q8: 'Akira Kurosawa',
-      q9: 'George Lucas',
-      q10: 'Steven Spielberg',
+    {
+      question: "5. Who directed Citizen Kane?",
+      options: ['Orson Wells','Akira Kurosawa', 'Alfred Hitchcock','George Lucas'],
+      answer: 'Orson Wells',
     },
+    {
+      question: '6. Who directed The Matrix?',
+      options: ['The Wachoskis','The Coens','The Russos','Lord and Miller'],
+      answer: 'The Wachoskis',
+    },
+    {
+      question: "7. Who directed Fargo?",
+      options: ['The Wachoskis', 'The Coens', 'The Russos','Lord and Miller'],
+      answer: 'The Coens',
+    },
+    {
+      question: "8. Who directed Seven Samurai?",
+      options: ['John Ford', 'Orson Wells', 'Akira Kurosawa', 'Stanley Kubrick'],
+      answer: 'Akira Kurosawa',
+    },
+    {
+      question: "9. Who Directed Star Wars?",
+      options: ['Steven Spielberg', 'George Lucas', 'Christopher Nolan', 'Stanley Kubrick' ],
+      answer: 'George Lucas',
+    },
+    {
+      question: "10. Who Directed Jaws?",
+      options: ['Stanley Kubrick', 'Quinten Tarantino', 'George Lucas', 'Steven Spielberg'],
+      answer: 'Steven Spielberg',
+    }]
 
+    var trivia = {
 
     startGame: function(){
+
       trivia.currentSet = 0;
       trivia.correct = 0;
       trivia.incorrect = 0;
@@ -78,19 +87,19 @@ $(document).ready(function(){
         trivia.timerId = setInterval(trivia.timerRunning, 1000);
       }
       
-      var questionContent = Object.values(trivia.questions)[trivia.currentSet];
+      var questionContent = Object.values(questions.question)[questions.currentSet];
       $('#question').text(questionContent);
       
-      var questionOptions = Object.values(trivia.options)[trivia.currentSet];
+      var questionOptions = Object.values(questions.options)[questions.currentSet];
       
-      $.each(questionOptions, function(index, key){
+      $.each(questionOptions, function(key){
         $('#options').append($('<button class="option btn btn-info btn-lg">'+key+'</button>'));
       })
       
     },
     
     timerRunning : function(){
-      if(trivia.timer > -1 && trivia.currentSet < Object.keys(trivia.questions).length){
+      if(trivia.timer > -1 && questions.currentSet < Object.keys(questions.question).length){
         $('#timer').text(trivia.timer);
         trivia.timer--;
       }
@@ -102,7 +111,7 @@ $(document).ready(function(){
         $('#results').html('<h3>Out of time! Next Question!</h3>');
       }
       
-      else if(trivia.currentSet === Object.keys(trivia.questions).length){
+      else if(questions.currentSet === Object.keys(questions.question).length){
         $('#results')
           .html('<h3>Thanks for playing!</h3>'+
           '<p>Correct: '+ trivia.correct +'</p>'+
@@ -119,10 +128,10 @@ $(document).ready(function(){
     
     guessChecker : function() {
       var resultId;
-      var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
+      var currentAnswer = Object.values(questions.answer)[questions.currentSet];
       if($(this).text() === currentAnswer){
         $(this).addClass('btn-success').removeClass('btn-info');
-        trivia.correct++;
+        questions.correct++;
         clearInterval(trivia.timerId);
         resultId = setTimeout(trivia.guessResult, 1000);
         $('#results').html('<h3>Correct!</h3>');
@@ -142,5 +151,7 @@ $(document).ready(function(){
       $('#results h3').remove();
       trivia.nextQuestion();
     }
-  
   }
+  $("#start").on('click', trivia.startGame);
+  $(document).on('click' , '.option', tirvia.guessChecker);
+})
