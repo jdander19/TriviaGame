@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+   
+    <title>Trivia Game</title>
+
+    <link rel="stylesheet" href="./assets/css/style.css">
+    
+  </head>
+
+  <body>
+  
+   
+    <div class="container">
+      <div class="header text-center clearfix">
+        <h1 class="text-muted">Know Your Directors!</h1>
+      </div>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+        <div id="game">
+          <h2>Can you name who made that movie?</h2>
+          <p id="remaining-time">Remaining Time: <span id="timer"></span></p>
+          <p id="question"></p>
+        </div>
+        <div id="results">
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="choices" class="text-center">
+          <button id="start" class="button">Start Game</button>
+          <div id="options">
+
+          </div>
+          
+        </div>
+      </div>
+
+    </div> 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+    <script src="./assets/javascript/app.js"></script>  
+
+
+  </body>
+</html>
